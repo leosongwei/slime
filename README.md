@@ -5,7 +5,7 @@ Leo's Unix Domain Socket Slime for SBCL
 
 Usage:
 
-* Load `start-swank-unix-socket.lisp` for listen on socket file at `$HOME/.slime.sock`.
+* Load `start-swank-unix-socket.lisp` to listen on socket file at `$HOME/.slime.sock`.
 * In Emacs, to connect to your lisp, run command: `slime-connect-unix`.
 
 [Original Repo](https://github.com/slime/slime)
