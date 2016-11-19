@@ -1069,6 +1069,21 @@ DIRECTORY change to this directory before starting the process.
          (slime-dispatching-connection process))
     (slime-setup-connection process)))
 
+(defun slime-connect-unix (path &optional _coding-system interactive-p)
+  "Connect to a running Swank server. Return the connection."
+  (interactive (list (read-from-minibuffer
+                       "Path: " (substitute-in-file-name "$HOME/.slime.sock"))
+                     nil t))
+  (slime-setup)
+  (when (and interactive-p
+             slime-net-processes
+             (y-or-n-p "Close old connections first? "))
+    (slime-disconnect-all))
+  (message "Connecting to Swank on unix socket: %S" path)
+  (let* ((process (slime-net-connect "localhost" path)) ;; no "host", hold position
+         (slime-dispatching-connection process))
+    (slime-setup-connection process)))
+
 ;; FIXME: seems redundant
 (defun slime-start-and-init (options fun)
   (let* ((rest (plist-get options :init-function))
@@ -1359,10 +1374,17 @@ first line of the file."
     (file-error nil)))
 
 ;;; Interface
+
+(defun connect-swank-stream (host port)
+  (if (stringp port)
+    ;; if is string, port as path
+    (make-network-process :name "SLIME Lisp" :family 'local :remote port)
+    (open-network-stream "SLIME Lisp" nil host port)))
+
 (defun slime-net-connect (host port)
   "Establish a connection with a CL."
   (let* ((inhibit-quit nil)
-         (proc (open-network-stream "SLIME Lisp" nil host port))
+         (proc (connect-swank-stream host port))
          (buffer (slime-make-net-buffer " *cl-connection*")))
     (push proc slime-net-processes)
     (set-process-buffer proc buffer)
