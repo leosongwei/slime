@@ -737,7 +737,7 @@ e.g.: (restart-loop (http-request url) (use-value (new) (setq url new)))"
 (defun setup-server (port announce-fn style dont-close backlog)
   (init-log-output)
   (let* ((socket (socket-quest port backlog))
-         (port (local-port socket)))
+         (port (if (stringp port) port (local-port socket))))
     (funcall announce-fn port)
     (labels ((serve () (accept-connections socket style dont-close))
              (note () (send-to-sentinel `(:add-server ,socket ,port
@@ -828,7 +828,7 @@ if the file doesn't exist; otherwise the first line of the file."
 
 (defun simple-announce-function (port)
   (when *swank-debug-p*
-    (format *log-output* "~&;; Swank started at port: ~D.~%" port)
+    (format *log-output* "~&;; Swank started at port: ~A~%" port)
     (force-output *log-output*)))
 
 

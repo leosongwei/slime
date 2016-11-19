@@ -102,7 +102,7 @@
   (car (sb-bsd-sockets:host-ent-addresses
         (sb-bsd-sockets:get-host-by-name name))))
 
-(defimplementation create-socket (host port &key backlog)
+(defun create-tcp-socket (host port backlog)
   (let ((socket (make-instance 'sb-bsd-sockets:inet-socket
                                :type :stream
                                :protocol :tcp)))
@@ -110,6 +110,20 @@
     (sb-bsd-sockets:socket-bind socket (resolve-hostname host) port)
     (sb-bsd-sockets:socket-listen socket (or backlog 5))
     socket))
+
+(defun create-unix-socket (host path backlog)
+  (declare (ignore host))
+  (when (probe-file path) (delete-file path))
+  (let ((socket (make-instance 'sb-bsd-sockets:local-socket
+                               :type :stream)))
+    (sb-bsd-sockets:socket-bind socket path)
+    (sb-bsd-sockets:socket-listen socket (or backlog 5))
+    socket))
+
+(defimplementation create-socket (host port &key backlog)
+  (if (stringp port)
+    (create-unix-socket host port backlog)
+    (create-tcp-socket host port backlog)))
 
 (defimplementation local-port (socket)
   (nth-value 1 (sb-bsd-sockets:socket-name socket)))
