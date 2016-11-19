@@ -1,4 +1,18 @@
-[![Build Status](https://img.shields.io/travis/slime/slime/master.svg)](https://travis-ci.org/slime/slime) [![MELPA](http://melpa.org/packages/slime-badge.svg?)](http://melpa.org/#/slime) [![MELPA Stable](http://stable.melpa.org/packages/slime-badge.svg?)](http://stable.melpa.org/#/slime)
+Leo's Unix Domain Socket Slime for SBCL
+=======================================
+
+**Will only work on SBCL**
+
+Usage:
+
+* Load `start-swank-unix-socket.lisp` for listen on socket file at `$HOME/.slime.sock`.
+* In Emacs, to connect to your lisp, run command: `slime-connect-unix`.
+
+[Original Repo](https://github.com/slime/slime)
+
+The original SLIME is in public domain, my code is also in public domain. Risk your self:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Overview
 --------
