@@ -1,4 +1,4 @@
-Leo's Unix Domain Socket Slime for SBCL
+Leo's Unix Domain Socket SLIME for SBCL
 =======================================
 
 **Will only work on SBCL**
